@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject gameOver;
     public GameObject playButton;
+    public GameObject textScore;
+    public GameObject logo;
 
     private void Awake()
     {
@@ -29,9 +31,12 @@ public class GameManager : MonoBehaviour
 
         playButton.SetActive(false);
         gameOver.SetActive(false);
+        logo.SetActive(false);
+        textScore.SetActive(true);
 
         Time.timeScale = 1f;
         player.enabled = true;
+        player.transform.position = Vector3.zero;
 
         Pipe[] pipes = FindObjectsOfType<Pipe>();
         for (int i = 0; i < pipes.Length; i++)
@@ -41,7 +46,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver()
-    {
+    {  
         gameOver.SetActive(true);
         playButton.SetActive(true);
 

@@ -20,6 +20,7 @@ public class BirdControl : MonoBehaviour
         bool isTap = Input.GetKeyDown(KeyCode.Space);
         if (isTap)
         {
+            rb.gravityScale = 1;
             animation.SetTrigger("Fly");
             rb.velocity = Vector2.up * jumpForce;
         }
