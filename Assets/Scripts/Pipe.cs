@@ -16,6 +16,8 @@ public class Pipe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.gameOver == true) return;
+
         transform.position += Vector3.left * Time.deltaTime * speed;
         if (transform.position.x < leftEdge)
         {

@@ -13,6 +13,7 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.gameOver == true || GameManager.instance.isStartGame == false) return;
         if(curTime> delayPerSpawn)
         {
             curTime = 0;
@@ -25,6 +26,6 @@ public class Spawner : MonoBehaviour
     {
         int randomPipe = Random.Range(0, pipeList.Count);
         GameObject pipes = Instantiate(pipeList[randomPipe]);
-        pipes.transform .position += Vector3.up * Random.Range(minHeight, maxHeight);
+        pipes.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
     }
 }

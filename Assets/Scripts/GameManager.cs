@@ -5,38 +5,36 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public int score;
     public BirdControl player;
-    public Text scoreText;
-    public GameObject gameOver;
-    public GameObject playButton;
-    public GameObject textScore;
-    public GameObject logo;
+    public static GameManager instance;
+    public bool gameOver;
+    public bool isStartGame;
+    public bool isPauseGame;
 
     private void Awake()
     {
-        Pause();
+        instance = this;
+        Time.timeScale = 0;
+        isStartGame = false;
+        gameOver = false;
+        isPauseGame = false;
+        player.enabled = false;
+        Pause();  
     }
 
     public void Pause()
     {
-        Time.timeScale = 0f;
         player.enabled = false;
     }
 
     public void Play()
     {
-        score = 0;
-        scoreText.text = score.ToString();
-
-        playButton.SetActive(false);
-        gameOver.SetActive(false);
-        logo.SetActive(false);
-        textScore.SetActive(true);
-
-        Time.timeScale = 1f;
-        player.enabled = true;
         player.transform.position = Vector3.zero;
+        gameOver = false;
+        Time.timeScale = 1; 
+        UIManager.instance.UIPlay();
+        player.enabled = true;
+        
 
         Pipe[] pipes = FindObjectsOfType<Pipe>();
         for (int i = 0; i < pipes.Length; i++)
@@ -45,17 +43,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GameOver()
-    {  
-        gameOver.SetActive(true);
-        playButton.SetActive(true);
+    public void StartGame()
+    {
+        isStartGame = true;
+        UIManager.instance.StartGame();
+    }
 
+    public void GameOver()
+    {
+        DataManager.instance.SetBestScore();
+        isStartGame = false;
+        gameOver = true;
+        UIManager.instance.GameOver();
         Pause();
     }
 
     public void IncreaseScore()
     {
-        score++;
-        scoreText.text = score.ToString();
+        DataManager.instance.AddScore();
+        int playerScore = DataManager.instance.GetScore();
+        UIManager.instance.UpdateScore(playerScore);
+    }
+
+    public void PauseGameMNG()
+    {
+        if (isPauseGame == false)
+        {
+            PauseGame();
+        }
+        else
+        {
+            ResumeGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        isPauseGame = true;
+        Time.timeScale = 0;
+    }
+    public void ResumeGame()
+    {
+        isPauseGame = false;
+        Time.timeScale = 1;
     }
 }
